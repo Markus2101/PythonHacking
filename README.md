@@ -9,9 +9,9 @@ Though not always copied 1 to 1, the examples are very similar to the ones menti
 
 ## Internet Protocol (IPv4 header)
 
-| 0 - 3: Version | 4 - 7: Header Length | 8 - 15: Type of Service | 16 - 31: Total Length                     |
-| 32 - 47: Identification                                         | 48 - 50: Flags | 51 - 63: Fragment Offset |
-| 64 - 71: Time to Live                 | 72 - 79: Protocol       | 80 - 95: Header Checksum                  |
-| 96 - 127: Source IP Address                                                                                 |
-| 128 - 159: Destination IP Address                                                                           |
-| 160 - 191: Options                                                                                          |
+| 0 - 3: Version | 4 - 7: Header Length | 8 - 15: Type of Service | 16 - 31: Total Length                     |  
+| 32 - 47: Identification                                         | 48 - 50: Flags | 51 - 63: Fragment Offset |  
+| 64 - 71: Time to Live                 | 72 - 79: Protocol       | 80 - 95: Header Checksum                  |  
+| 96 - 127: Source IP Address                                                                                 |  
+| 128 - 159: Destination IP Address                                                                           |  
+| 160 - 191: Options                                                                                          |  
