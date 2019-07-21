@@ -62,12 +62,12 @@ try:
         # read in packet
         raw_buffer = sniffer.recvfrom(65565)[0]
 
-        # create an IP header from the first 24 bytes of the buffer
+        # create an IP header from the first 20 bytes of the buffer
         ip_header = IP(raw_buffer[:20])
 
         # print out the protocol that was detected and the hosts
-        print("Protocol: {} {} -> {}".format(ip_header.protocol, ip_header.src_address,
-                                             ip_header.dst_address))
+        print("Protocol IPv{}: {} {} -> {} [{} bytes]".format(ip_header.version,
+            ip_header.protocol, ip_header.src_address, ip_header.dst_address, ip_header.len))
         
 # CTRL-C
 except KeyboardInterrupt:
