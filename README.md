@@ -5,6 +5,7 @@ The examples in this repository are mainly taken from following books:
 - Python Hacking (T. J. O'Connor)
 
 Though not always copied 1 to 1, the examples are very similar to the ones mentioned in above books.
+However, these examples are implemented for Python versions >= 3.x.
 
 
 ## Internet Protocol (IPv4 header)

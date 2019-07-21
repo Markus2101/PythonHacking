@@ -19,11 +19,12 @@ class IP(Structure):
         ("protocol_num",    c_ubyte),
         ("sum",             c_ushort),
         ("src",             c_ulong),
-        ("dst",             c_ulong)
+        ("dst",             c_ulong),
+        ("options",         c_ulong)
         ]
 
     def __new__(cls, socket_buffer=None):
-        return self.from_buffer_copy(socket_buffer)
+        return cls.from_buffer_copy(socket_buffer)
 
     def __init__(self, socket_buffer=None):
         # map protocol constants to their names
@@ -62,8 +63,8 @@ try:
         # read in packet
         raw_buffer = sniffer.recvfrom(65565)[0]
 
-        # create an IP header from the first 20 bytes of the buffer
-        ip_header = IP(raw_buffer[:20])
+        # create an IP header from the first 24 bytes of the buffer
+        ip_header = IP(raw_buffer[:24])
 
         # print out the protocol that was detected and the hosts
         print("Protocol: {} {} -> {}".format(ip_header.protocol, ip_header.src_address,
