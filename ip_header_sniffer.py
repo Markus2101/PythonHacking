@@ -38,6 +38,9 @@ class IP(Structure):
             self.protocol = self.protocol_map[self.protocol_num]
         except:
             self.protocol = str(self.protocol_num)
+
+        # header length := #32-bit words in header (including options field)
+        self.nb_bytes_of_header = (self.ihl * 4)
             
 
 # create a raw socket and bind it to the public interface
@@ -62,12 +65,18 @@ try:
         # read in packet
         raw_buffer = sniffer.recvfrom(65565)[0]
 
-        # create an IP header from the first 20 bytes of the buffer
+        # create an IP header
         ip_header = IP(raw_buffer[:20])
 
         # print out the protocol that was detected and the hosts
-        print("Protocol IPv{}: {} {} -> {} [{} bytes]".format(ip_header.version,
-            ip_header.protocol, ip_header.src_address, ip_header.dst_address, ip_header.len))
+        print("Protocol IPv{}: {} {} -> {}".format(ip_header.version,
+            ip_header.protocol, ip_header.src_address, ip_header.dst_address))
+
+        # total number of bytes of IP frame
+        print("----- Total length of IP frame: {} bytes".format(ip_header.len)) 
+
+        # number of 32-bit words in header without options-field would be 5 (160 bits := 20 bytes)
+        print("----- Length of IP header: {} bytes".format(ip_header.nb_bytes_of_header))
         
 # CTRL-C
 except KeyboardInterrupt:
