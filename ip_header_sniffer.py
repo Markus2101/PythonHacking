@@ -11,9 +11,11 @@ HOST = "192.168.178.32"
 
 
 def create_ip_payload(data_buffer, num_bytes_opt_data, num_bytes_ip_data):
-    """ set the options field of the IP header dynamically depending on the given length
-        set the ip-data of the IP frame
     """
+    - set the options field of the IP header dynamically depending on the given length
+    - set the ip-data of the IP frame
+    """
+    
     class IP_data(Structure):
         _fields_ = [
             ("opt",     (c_ubyte * num_bytes_opt_data)),
@@ -21,8 +23,9 @@ def create_ip_payload(data_buffer, num_bytes_opt_data, num_bytes_ip_data):
             ]
 
         def __new__(cls, data_buffer=None):
-            """ create opt fields from given data (starts right after dst-address field) and ip-data
-                which starts right after opt-field
+            """
+            create opt fields from given data (starts right after dst-address field) and ip-data,
+            which starts right after opt-field
             """
             return cls.from_buffer_copy(data_buffer)
 
@@ -32,6 +35,27 @@ def create_ip_payload(data_buffer, num_bytes_opt_data, num_bytes_ip_data):
             self.ip_data_length = num_bytes_ip_data
 
     return IP_data(data_buffer)
+
+
+def create_tcp_frame(ip_data):
+    """ create a tcp frame out of the ip data """
+
+    class TCP_frame(object):
+        def __init__(self, ip_data):
+            # port numbers
+            self.src_port = c_ushort((ip_data[0] << 8) + ip_data[1]).value
+            self.dst_port = c_ushort((ip_data[2] << 8) + ip_data[3]).value
+
+            # sequence number
+            self.seq_number = c_ulong((ip_data[4] << 24) + (ip_data[5] << 16) + (ip_data[6] << 8) + ip_data[7]).value
+
+            # ACK number
+            self.ack_number = c_ulong((ip_data[8] << 24) + (ip_data[9] << 16) + (ip_data[10] << 8) + ip_data[11]).value
+
+            print("[*] TCP port {} -> {}".format(self.src_port, self.dst_port))
+            print("[*] SEQ {} :: ACK {}".format(self.seq_number, self.ack_number))
+
+    return TCP_frame(ip_data)
 
 
 # IP header
@@ -55,7 +79,7 @@ class IP(Structure):
         ]
 
     def __new__(cls, socket_buffer=None):
-        """ create the c_types structure by copying the given buffer and return it"""
+        """ create the c_types structure by copying the given buffer and return it """
         return cls.from_buffer_copy(socket_buffer)
 
     def __init__(self, socket_buffer=None):
@@ -89,7 +113,11 @@ class IP(Structure):
         print("[*] Header length in bytes: {}".format(self.nb_bytes_of_header))
         print("[*] Creating options field out of {} bytes".format(self.nb_bytes_of_opt_field))
         print("[*] Creating ip-data out of {} bytes".format(self.nb_bytes_of_data_field))
-        ip_data_field = create_ip_payload(socket_buffer[IP_HEADER_LENGTH:], self.nb_bytes_of_opt_field, self.nb_bytes_of_data_field)
+        self.ip_data_field = create_ip_payload(socket_buffer[IP_HEADER_LENGTH:], self.nb_bytes_of_opt_field, self.nb_bytes_of_data_field)
+
+        # create TCP frame if present
+        if self.protocol == "TCP":
+            create_tcp_frame(self.ip_data_field.ip_data)
 
 
 # create a raw socket and bind it to the public interface
