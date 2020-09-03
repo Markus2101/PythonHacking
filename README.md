@@ -1,11 +1,11 @@
 # PythonHacking
 
 The examples in this repository are mainly taken from following books:
-- Black Hat Python (Justin Seitz)
-- Python Hacking (T. J. O'Connor)
+- [Black Hat Python](https://www.amazon.de/Black-Hat-Python-Programming-Pentesters/dp/1593275900) (Justin Seitz)
+- [Python Hacking](https://www.amazon.de/Python-Hacking-Lernen-Sprache-schlie%C3%9Fen-ebook/dp/B01BNV7IMM/ref=sr_1_2?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=python+hacking+t+j&qid=1599134126&sr=8-2) (T. J. O'Connor)
 
 Though not always copied 1 to 1, the examples are very similar to the ones mentioned in above books.
-However, these examples are implemented for Python versions >= 3.x.
+However, the examples in this repository are implemented for Python versions >= 3.x.
 
 
 ## Internet Protocol (IPv4 header)
